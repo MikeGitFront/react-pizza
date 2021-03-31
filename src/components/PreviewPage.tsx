@@ -4,25 +4,27 @@ import { PreviewCard } from './PreviewCard'
 
 const PreviewPageWrapper = styled.div`
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+    justify-content:center;
+    grid-template-columns: 350px 350px 350px;
     grid-template-rows:1fr;
     grid-gap:20px;
     padding:20px 20px;
 
     @media (max-width:1000px) {
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:320px 320px;
         padding:10px 10px;
     }
     @media (max-width:670px) {
-        grid-template-columns:1fr;
+        grid-template-columns:320px;
         padding:10px 40px;
     }
     @media (max-width:480px) {
-        padding:5px 15px;
+        padding:10px 15px;
     }
     @media (max-width:320px) {
-        padding:0 10px 10px 10px;
-        grid-gap:5px;
+        padding:10px;
+        grid-template-columns:1fr;
+        grid-gap:10px 5px;
     }
 `
 
@@ -45,7 +47,7 @@ export const PreviewPage: React.FC = () => {
             }
         },
         {
-            name: 'BBQ chicken',
+            name: 'Chicken BBQ',
             src: 'https://www.upload.ee/image/13003020/BBQ.png',
             cost: {
                 large: 19.99,
