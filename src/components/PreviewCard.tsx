@@ -101,8 +101,6 @@ const CardCheckbox = styled.div<BgProps>`
     background:${props => props.active ? 'rgb(255,11,11,.5)' : 'rgb(190,190,190,.5)'};
     border-radius:5px;
     &:hover {
-        width:100%;
-        border-radius:20px;
         background-color:#FF5A68;
     }
     
