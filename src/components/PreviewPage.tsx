@@ -31,24 +31,40 @@ export const PreviewPage: React.FC = () => {
         {
             name: 'Bavarian',
             src: 'https://www.upload.ee/image/13003017/Bavarskaya.png',
+            cost: {
+                large: 19.99,
+                medium: 13.99,
+            }
         },
         {
             name: 'Ranch',
             src: 'https://www.upload.ee/image/13003018/Ranch.png',
+            cost: {
+                large: 17.99,
+                medium: 11.99,
+            }
         },
         {
             name: 'BBQ chicken',
             src: 'https://www.upload.ee/image/13003020/BBQ.png',
+            cost: {
+                large: 19.99,
+                medium: 13.99,
+            }
         },
         {
             name: 'Hawaiian',
             src: 'https://www.upload.ee/image/13003022/Gavaiskaya.png',
+            cost: {
+                large: 17.99,
+                medium: 11.99,
+            }
         },
     ])
 
     return (
         <PreviewPageWrapper>
-            {pizzas.map(item => <PreviewCard key={item.src} src={item.src} name={item.name} />)}
+            {pizzas.map(item => <PreviewCard cost={item.cost} key={item.src} src={item.src} name={item.name} />)}
         </PreviewPageWrapper>
     )
 }

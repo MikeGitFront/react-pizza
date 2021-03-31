@@ -8,7 +8,6 @@ const PreviewCardWrapper = styled.div`
     justify-content:space-between;
     align-items:center;
     min-width:300px;
-    // width:100%;
     border-radius:20px;
     border:1px solid transparent;
     padding:10px 0;
@@ -16,6 +15,7 @@ const PreviewCardWrapper = styled.div`
     min-height:300px;
     transition:0.3s all linear;
     background-color:rgb(255,255,255,0.8);
+    // background-color:rgb(255,160,30,0.9);
 
     &:hover {
         box-shadow:0px 0px 4px 1px black;
@@ -32,6 +32,7 @@ const PreviewCardWrapper = styled.div`
 const PreviewCardHeader = styled.div`
     font-weight:600;
     color:black;
+    padding:5px 0 20px 0;
     font-size:28px;
 `
 
@@ -39,6 +40,7 @@ const PreviewCardBody = styled.div`
     display:flex;
     flex-direction:column;
     color:black;
+    padding:0 0 15px 0;
 `
 
 const PreviewCardFooter = styled.div`
@@ -81,63 +83,114 @@ const Sizes = styled.div`
     align-items:flex-start;
 `
 
-const CardCheckbox = styled.div`
+type BgProps = {
+    active?: boolean
+}
+
+const CardCheckbox = styled.div<BgProps>`
+    display:flex;
+    flex-direction:row-reverse;
+    justify-content:space-between;
+    align-items:center;
     width:100%;
     position:relative;
     margin-bottom:5px;
+    transition:0.5s all ease;
+    // background:rgb(190,190,190,.5);
+    margin:10px 0;
+    background:${props => props.active ? 'rgb(255,11,11,.5)' : 'rgb(190,190,190,.5)'};
+    border-radius:5px;
+    &:hover {
+        width:100%;
+        border-radius:20px;
+        background-color:#FF5A68;
+    }
+    
 `
 
 const CardCheckboxInput = styled.input`
     width:100%;
     opacity:0;
+    position:absolute;
 `
 
 
 const FakeCheckbox = styled.div`
-    position:absolute;
-    left:5px;
-    width:20px;
-    height:20px;
+    width:25px;
+    height:25px;
     border-radius:20px;
-    border:1px solid black;
+    padding-left:2px;
     display:flex;
     justify-content:center;
     align-items:center;
+    color:light-green;
 `
 
-const Size = styled.p`
+export const Size = styled.p`
     font-size:24px;
-    position:absolute;
-    right:10px;
-    top:-10px;
+    margin:5px 10px 5px 0;
+    @media (max-width:480px) {
+        font-size:20px;
+    }
+`
+
+export const Weight = styled.p`
+    font-size:18px;
     margin:0;
+    position:absolute;
+    left:50px;
+    @media(max-width:480px) {
+        font-size:16px;
+        left:40px;
+    }
+`
+
+export const Price = styled.p`
+    font-size:26px;
+    font-weight:600;
+    margin:0;
+    position:absolute;
+    right:120px;
+    @media(max-width:480px) {
+        right:105px;
+        font-size:20px;
+    }
 `
 
 interface PreviewCardProps {
     src: string
     name: string
+    cost: {
+        large: number,
+        medium: number
+    }
 }
 
-export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name }) => {
-    const [isCheckedBig, setIsCheckedBig] = useState(true)
-    const [isCheckedSmall, setIsCheckedSmall] = useState(false)
+export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost }) => {
+    const [isChecked, setIsChecked] = useState(true)
+
+
     return (
         <PreviewCardWrapper>
             <PreviewCardHeader>{name}</PreviewCardHeader>
             <PreviewCardBody>
                 <PreviewImage src={src} alt="" />
                 <Sizes>
-                    <CardCheckbox onClick={() => setIsCheckedBig(!isCheckedBig)}>
-                        <Size>Royal</Size>
+                    <CardCheckbox active={isChecked} onClick={() => setIsChecked(true)}>
+                        <Size>Large</Size>
+                        <Weight>1000g</Weight>
+                        <Price>{cost.large}<sup>$</sup></Price>
                         <FakeCheckbox>
-                            {isCheckedBig && !isCheckedSmall ? <FaCheck /> : null}
+                            {isChecked ? <FaCheck style={{ fontSize: '20px' }} /> : null}
                         </FakeCheckbox>
                         <CardCheckboxInput type="radio" name={`${src}`} />
                     </CardCheckbox>
-                    <CardCheckbox onClick={() => setIsCheckedSmall(!isCheckedSmall)}>
-                        <Size>Small</Size>
+                    <CardCheckbox active={!isChecked} onClick={() => setIsChecked(false)}>
+                        <Size>Medium</Size>
+                        <Weight>650g</Weight>
+                        <Price>{cost.medium}<sup>$</sup></Price>
                         <FakeCheckbox>
-                            {isCheckedSmall && isCheckedBig ? <FaCheck /> : null}
+                            {!isChecked ? <FaCheck style={{ fontSize: '22px' }} /> : null}
                         </FakeCheckbox>
                         <CardCheckboxInput type="radio" name={`${src}`} />
                     </CardCheckbox>
