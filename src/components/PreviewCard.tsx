@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaCartPlus, FaCheck } from 'react-icons/fa'
 import styled, { keyframes } from 'styled-components'
 
@@ -17,12 +17,12 @@ const PreviewCardWrapper = styled.div`
     background-color:rgb(255,255,255,0.8);
     // background-color:rgb(255,160,30,0.9);
 
-    &:hover {
-        box-shadow:0px 0px 4px 1px black;
-        border:1px solid black;
-        background-color:white;
-        transform:translateY(-5px)
-    }
+    // &:hover {
+    //     box-shadow:0px 0px 4px 1px black;
+    //     border:1px solid black;
+    //     background-color:white;
+    //     transform:translateY(-5px)
+    // }
     @media (max-width:480px) {
         min-width:240px;
         border-radius:0;
@@ -40,7 +40,7 @@ const PreviewCardBody = styled.div`
     display:flex;
     flex-direction:column;
     color:black;
-    padding:0 0 15px 0;
+    padding:0 0 5px 0;
 `
 
 const PreviewCardFooter = styled.div`
@@ -49,6 +49,13 @@ const PreviewCardFooter = styled.div`
     cursor:pointer;
     color:black;
     font-size:20px;
+    border:1px solid black;
+    transition:1s all ease;
+    padding:5px 10px;
+    border-radius:20px;
+    &:hover {
+        background-color:rgb(0,0,0,0.3)
+    }
 `
 
 const rotate = keyframes`
@@ -94,10 +101,11 @@ const CardCheckbox = styled.div<BgProps>`
     align-items:center;
     width:100%;
     position:relative;
-    margin-bottom:5px;
     transition:0.5s all ease;
-    // background:rgb(190,190,190,.5);
-    margin:10px 0;
+    // margin:10px 0;
+    &:not(:last-child) {
+        margin:10px 0 ;
+    }
     background:${props => props.active ? 'rgb(255,11,11,.5)' : 'rgb(190,190,190,.5)'};
     border-radius:5px;
     &:hover {
@@ -161,22 +169,60 @@ interface PreviewCardProps {
     cost: {
         large: number,
         medium: number
+    },
+    weight: {
+        large: number,
+        medium: number,
     }
 }
 
-export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost }) => {
+interface AddToCart {
+    name: string
+    weight: number
+    cost: number
+}
+
+export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost, weight }) => {
     const [isChecked, setIsChecked] = useState(true)
+    const [notifText, setNotifText] = useState('')
+
+    useEffect(() => {
+        setTimeout(() => {
+            setNotifText('')
+        }, 2000)
+    }, [notifText])
+
+    const addToCart = () => {
+        if (isChecked) {
+            const pizza: AddToCart = {
+                name,
+                weight: weight.large,
+                cost: cost.large,
+            }
+            setNotifText(`${pizza.name} large added to cart`)
+        }
+        if (!isChecked) {
+            const pizza: AddToCart = {
+                name,
+                weight: weight.medium,
+                cost: cost.medium,
+            }
+            setNotifText(`${pizza.name} medium added to cart`)
+        }
+    }
+
+
 
 
     return (
         <PreviewCardWrapper>
             <PreviewCardHeader>{name}</PreviewCardHeader>
             <PreviewCardBody>
-                <PreviewImage src={src} alt="" />
+                <PreviewImage src={src} alt="pizza" />
                 <Sizes>
                     <CardCheckbox active={isChecked} onClick={() => setIsChecked(true)}>
                         <Size>Large</Size>
-                        <Weight>1000g</Weight>
+                        <Weight>{weight.large}g</Weight>
                         <Price>{cost.large}<sup>$</sup></Price>
                         <FakeCheckbox>
                             {isChecked ? <FaCheck style={{ fontSize: '20px' }} /> : null}
@@ -185,7 +231,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost }) => 
                     </CardCheckbox>
                     <CardCheckbox active={!isChecked} onClick={() => setIsChecked(false)}>
                         <Size>Medium</Size>
-                        <Weight>650g</Weight>
+                        <Weight>{weight.medium}g</Weight>
                         <Price>{cost.medium}<sup>$</sup></Price>
                         <FakeCheckbox>
                             {!isChecked ? <FaCheck style={{ fontSize: '22px' }} /> : null}
@@ -194,7 +240,11 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost }) => 
                     </CardCheckbox>
                 </Sizes>
             </PreviewCardBody>
-            <PreviewCardFooter className="addToCart">Add to cart<FaCartPlus style={{ marginLeft: '5px' }} /></PreviewCardFooter>
-        </PreviewCardWrapper>
+            <div>{notifText}</div>
+            <PreviewCardFooter
+                onClick={() => addToCart()}
+                className="addToCart"
+            >Add to cart<FaCartPlus style={{ marginLeft: '5px' }} /></PreviewCardFooter>
+        </PreviewCardWrapper >
     )
 }
