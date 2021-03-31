@@ -10,7 +10,7 @@ const PreviewPageWrapper = styled.div`
     grid-gap:20px;
     padding:20px 20px;
 
-    @media (max-width:1000px) {
+    @media (max-width:1200px) {
         grid-template-columns:320px 320px;
         padding:10px 10px;
     }
@@ -36,7 +36,11 @@ export const PreviewPage: React.FC = () => {
             cost: {
                 large: 19.99,
                 medium: 13.99,
-            }
+            },
+            weight: {
+                large: 1200,
+                medium: 690,
+            },
         },
         {
             name: 'Ranch',
@@ -44,7 +48,11 @@ export const PreviewPage: React.FC = () => {
             cost: {
                 large: 17.99,
                 medium: 11.99,
-            }
+            },
+            weight: {
+                large: 1000,
+                medium: 600,
+            },
         },
         {
             name: 'Chicken BBQ',
@@ -52,7 +60,11 @@ export const PreviewPage: React.FC = () => {
             cost: {
                 large: 19.99,
                 medium: 13.99,
-            }
+            },
+            weight: {
+                large: 1100,
+                medium: 670,
+            },
         },
         {
             name: 'Hawaiian',
@@ -60,13 +72,17 @@ export const PreviewPage: React.FC = () => {
             cost: {
                 large: 17.99,
                 medium: 11.99,
-            }
+            },
+            weight: {
+                large: 1050,
+                medium: 650,
+            },
         },
     ])
 
     return (
         <PreviewPageWrapper>
-            {pizzas.map(item => <PreviewCard cost={item.cost} key={item.src} src={item.src} name={item.name} />)}
+            {pizzas.map(item => <PreviewCard weight={item.weight} cost={item.cost} key={item.src} src={item.src} name={item.name} />)}
         </PreviewPageWrapper>
     )
 }
