@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FaCartPlus, FaCheck } from 'react-icons/fa'
 import styled, { keyframes } from 'styled-components'
 
@@ -186,12 +186,6 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost, weigh
     const [isChecked, setIsChecked] = useState(true)
     const [notifText, setNotifText] = useState('')
 
-    useEffect(() => {
-        setTimeout(() => {
-            setNotifText('')
-        }, 2000)
-    }, [notifText])
-
     const addToCart = () => {
         if (isChecked) {
             const pizza: AddToCart = {
@@ -199,7 +193,6 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost, weigh
                 weight: weight.large,
                 cost: cost.large,
             }
-            setNotifText(`${pizza.name} large added to cart`)
         }
         if (!isChecked) {
             const pizza: AddToCart = {
@@ -207,7 +200,6 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost, weigh
                 weight: weight.medium,
                 cost: cost.medium,
             }
-            setNotifText(`${pizza.name} medium added to cart`)
         }
     }
 
@@ -240,7 +232,6 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost, weigh
                     </CardCheckbox>
                 </Sizes>
             </PreviewCardBody>
-            <div>{notifText}</div>
             <PreviewCardFooter
                 onClick={() => addToCart()}
                 className="addToCart"
