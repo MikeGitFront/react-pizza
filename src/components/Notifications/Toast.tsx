@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styled, { keyframes, css } from 'styled-components'
+import { NotificationContext } from '../NotificationContext'
 
 const appear = keyframes`
   0% {
@@ -55,12 +56,14 @@ interface LineProps {
 interface ToastProps {
     message: string
     type: string
+    id: number
 }
 
-const Toast: React.FC<ToastProps> = (props) => {
+const Toast: React.FC<ToastProps> = ({ message, id, type }) => {
     const [width, setWidth] = useState<number>(0)
     const [intervalID, setIntervalID] = useState<number>(0)
     const [appear, setAppear] = useState(true)
+    const { deleteNotification } = useContext(NotificationContext)
 
     const timerHandler = () => {
         const timer: number = window.setInterval(() => {
@@ -84,7 +87,7 @@ const Toast: React.FC<ToastProps> = (props) => {
         timerPauseHandler()
         setAppear(false)
         setTimeout(() => {
-
+            deleteNotification(id)
         }, 400)
     }, [timerPauseHandler])
 
@@ -106,11 +109,11 @@ const Toast: React.FC<ToastProps> = (props) => {
             onMouseLeave={timerHandler}
         >
             <div>
-                <p style={{ margin: '0px', padding: '10px' }}>{props.message}</p>
+                <p style={{ margin: '0px', padding: '10px' }}>{message}</p>
             </div>
             <Line
                 style={{ width: `${width}%` }}
-                type={props.type}>
+                type={type}>
             </Line>
         </ToastItem>
     )
