@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaCartPlus, FaCheck } from 'react-icons/fa'
 import styled, { keyframes } from 'styled-components'
+import { NotificationContext } from './NotificationContext'
 
 const PreviewCardWrapper = styled.div`
     display:flex;
@@ -177,6 +178,7 @@ interface PreviewCardProps {
 }
 
 interface AddToCart {
+    type: `SUCCESS` | `ERROR`
     name: string
     weight: number
     cost: number
@@ -184,22 +186,27 @@ interface AddToCart {
 
 export const PreviewCard: React.FC<PreviewCardProps> = ({ src, name, cost, weight }) => {
     const [isChecked, setIsChecked] = useState(true)
-    const [notifText, setNotifText] = useState('')
+    const { addNotification } = useContext(NotificationContext)
 
     const addToCart = () => {
         if (isChecked) {
             const pizza: AddToCart = {
+                type: `SUCCESS`,
                 name,
                 weight: weight.large,
                 cost: cost.large,
             }
+            addNotification(`${pizza.name} ${pizza.weight}g added to cart`, pizza.type)
+
         }
         if (!isChecked) {
             const pizza: AddToCart = {
+                type: `SUCCESS`,
                 name,
                 weight: weight.medium,
                 cost: cost.medium,
             }
+            addNotification(`${pizza.name} ${pizza.weight}g added to cart`, pizza.type)
         }
     }
 
